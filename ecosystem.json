@@ -1,0 +1,17 @@
+{
+  "apps": [
+    {
+      "name": "sc-frontend",
+      "script": "./server.js",
+      "instances": 1,
+      "exec_mode": "fork_mode",
+      "env": {
+        "NODE_ENV": "production",
+        "NODE_PATH": "./src",
+        "PORT": 8080,
+        "APIHOST": "localhost",
+        "APIPORT": 4060
+      }
+    }
+  ]
+}
