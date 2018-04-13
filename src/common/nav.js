@@ -22,7 +22,6 @@ export const getNavData = app => [
         name: '工作台',
         icon: 'dashboard',
         path: 'dashboard',
-        sys: [0, 1],
         component: dynamicWrapper(app, [], () => import('../routes/Dashboard/Monitor'))
       }
     ]
@@ -41,23 +40,7 @@ export const getNavData = app => [
           {
             name: '登录',
             path: 'login',
-            component: dynamicWrapper(app, ['user'], () =>
-              import('../routes/User/Login')
-            )
-          },
-          {
-            name: '注册',
-            path: 'register',
-            component: dynamicWrapper(app, ['register'], () =>
-              import('../routes/User/Register')
-            )
-          },
-          {
-            name: '注册结果',
-            path: 'register-result',
-            component: dynamicWrapper(app, [], () =>
-              import('../routes/User/RegisterResult')
-            )
+            component: dynamicWrapper(app, ['user'], () => import('../routes/User/Login'))
           }
         ]
       }

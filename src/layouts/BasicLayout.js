@@ -10,7 +10,6 @@ import groupBy from 'lodash/groupBy';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import Debounce from 'lodash-decorators/debounce';
-import HeaderSearch from '../components/HeaderSearch';
 import GlobalFooter from '../components/GlobalFooter';
 import NotFound from '../routes/Exception/404';
 import styles from './BasicLayout.less';
@@ -18,8 +17,6 @@ import logo from '../assets/logo.svg';
 
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
-
-const kSystems = ['Genesis', '金融系统']
 
 const query = {
   'screen-xs': {
@@ -98,12 +95,6 @@ class BasicLayout extends React.PureComponent {
       });
     }
   }
-  onSystemMenuClick = ({ key }) => {
-    this.props.dispatch({
-      type: 'global/changeCurrentSystem',
-      payload: parseInt(key, 10)
-    })
-  }
   getMenuData = (data, parentPath) => {
     let arr = [];
     data.forEach((item) => {
@@ -137,14 +128,9 @@ class BasicLayout extends React.PureComponent {
     if (!menusData) {
       return [];
     }
-    const { global: { currentSystem } } = this.props
     return menusData.map((item) => {
       if (!item.name) {
         return null;
-      }
-      const { sys } = item
-      if (sys && !sys.includes(currentSystem)) {
-        return null
       }
 
       let itemPath;
@@ -283,7 +269,6 @@ class BasicLayout extends React.PureComponent {
         this.props.dispatch(routerRedux.push('/user/login'));
       }
     }
-    console.log(287, user, currentUser)
     const menu = (
       <Menu className={ styles.menu } selectedKeys={ [] } onClick={ this.onMenuClick }>
         <Menu.Item disabled><Icon type="user" />个人中心</Menu.Item>
@@ -292,22 +277,11 @@ class BasicLayout extends React.PureComponent {
         <Menu.Item key="logout"><Icon type="logout" />登出</Menu.Item>
       </Menu>
     );
-    const kSystemMenu = (
-      <Menu onClick={ this.onSystemMenuClick }>
-        { kSystems.map((l, idx) => <Menu.Item key={ idx }>{ l }</Menu.Item>) }
-      </Menu>
-    );
-    const noticeData = this.getNoticeData();
 
     // Don't show popup menu when it is been collapsed
     const menuProps = collapsed ? {} : {
       openKeys: this.state.openKeys
     };
-
-    const kSystemStyle = {
-      marginLeft: '6px',
-      color: 'white'
-    }
 
     const layout = (
       <Layout>
@@ -323,11 +297,6 @@ class BasicLayout extends React.PureComponent {
           <div className={ styles.logo }>
             <Link to="/">
               <img alt="logo" src={ logo } />
-              <Dropdown overlay={ kSystemMenu } trigger={ ['click'] }>
-                <span style={ kSystemStyle }>
-                  { kSystems[global.currentSystem] } <Icon type="down" />
-                </span>
-              </Dropdown>
             </Link>
           </div>
           <Menu
@@ -349,17 +318,6 @@ class BasicLayout extends React.PureComponent {
               onClick={ this.toggle }
             />
             <div className={ styles.right }>
-              <HeaderSearch
-                className={ `${styles.action} ${styles.search}` }
-                placeholder="站内搜索"
-                dataSource={ ['搜索提示一', '搜索提示二', '搜索提示三'] }
-                onSearch={ (value) => {
-                  console.log('input', value); // eslint-disable-line
-                } }
-                onPressEnter={ (value) => {
-                  console.log('enter', value); // eslint-disable-line
-                } }
-              />
               { user ? (
                 <Dropdown overlay={ menu }>
                   <span className={ `${styles.action} ${styles.account}` }>
@@ -386,7 +344,7 @@ class BasicLayout extends React.PureComponent {
                     )
                   )
                 }
-                <Redirect exact from="/" to="/dashboard/analysis" />
+                <Redirect exact from="/" to="/dashboard/main" />
                 <Route component={ NotFound } />
               </Switch>
             </div>

@@ -21,7 +21,7 @@ export default class Login extends Component {
             payload: {
               ...values,
               callback: () => {
-                this.props.dispatch(routerRedux.push('/dashboard/analysis'));
+                this.props.dispatch(routerRedux.push('/dashboard/main'));
               }
             },
           });
